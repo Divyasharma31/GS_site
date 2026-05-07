@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #191414;
+  --foreground: #FFFFFF;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar for Spotify aesthetic */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #191414;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3E3E3E;
+  border-radius: 6px;
+  border: 3px solid #191414;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B3B3B3;
+}
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight text-white;
+  }
+  
+  p {
+    @apply text-spotify-textSec leading-relaxed;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-spotify-green hover:bg-spotify-greenHover text-spotify-black font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 active:scale-95;
+  }
+  
+  .glass-card {
+    @apply bg-spotify-card border border-white/10 rounded-2xl p-8 hover:border-spotify-green/50 transition-colors duration-500;
+  }
+}

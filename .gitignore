@@ -1,10 +1,34 @@
+
+# Dependencies
 node_modules/
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Build outputs
 .next/
 out/
 build/
 dist/
-.DS_Store
-*.log
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
 .env
 .env.local
-*.node
+.env*.local
+
+# Mac system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional: Keep your 3D model (already included)
+# main.glb - this is fine to push
+EOF
