@@ -10,7 +10,7 @@ interface Model3DProps {
 }
 
 export default function Model3D({ progress }: Model3DProps) {
-  const { scene } = useGLTF("/main.glb");
+  const { scene } = useGLTF("/main-1.glb");
   const modelRef = useRef<THREE.Group>(null);
 
   // Store initial positions and randomized factors for staggering
@@ -49,11 +49,12 @@ export default function Model3D({ progress }: Model3DProps) {
       if (child instanceof THREE.Mesh) {
         const part = partsData.find((d) => d.uuid === child.uuid);
         if (part) {
-          // Calculate explosion based on staggered factor
-          // We use a power function to make it "pop" like anime.js
-          const easedProgress = Math.pow(currentProgress, 1.5);
-          const strength = easedProgress * part.factor * 8;
+          // Smoother, more controlled easing for the explosion
+          // 0 = Assembled, 1 = Exploded
+          const easedProgress = currentProgress; 
+          const strength = easedProgress * part.factor * 2.5; // Reduced from 8 to 2.5 for control
           
+          // Move outward from the local center
           const direction = part.pos.clone().normalize();
           if (direction.length() === 0) direction.set(0, 1, 0);
 
@@ -61,27 +62,27 @@ export default function Model3D({ progress }: Model3DProps) {
           child.position.y = part.pos.y + direction.y * strength;
           child.position.z = part.pos.z + direction.z * strength;
 
-          // Add staggered rotation
-          child.rotation.x = easedProgress * part.rotationAxis.x * 4;
-          child.rotation.y = easedProgress * part.rotationAxis.y * 4;
-          child.rotation.z = easedProgress * part.rotationAxis.z * 4;
+          // Subtle, controlled rotation instead of chaotic spinning
+          child.rotation.x = easedProgress * part.rotationAxis.x * 0.5;
+          child.rotation.y = easedProgress * part.rotationAxis.y * 0.5;
         }
       }
     });
 
-    // Constant slow drift
-    modelRef.current.rotation.y = state.clock.getElapsedTime() * 0.1 + (currentProgress * 2);
+    // Slow, professional rotation for the entire group
+    modelRef.current.rotation.z = currentProgress * 0.5; // Slight tilt
   });
 
   return (
     <primitive 
       ref={modelRef} 
       object={scene} 
-      scale={1.5} 
-      position={[0, -1, 0]} 
+      scale={1.8} 
+      position={[0, 0, 0]} 
+      rotation={[Math.PI / 2, 0, 0]} // Corrected upright rotation (adjusting based on common GLB issues)
     />
   );
 }
 
 // Preload the model
-useGLTF.preload("/main.glb");
+useGLTF.preload("/main-1.glb");
